@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         produtoClientApi.buscarProdutoPorId(
             id,
             onSuccess = { produto ->
+                textEstado.text = produto?.id.toString();
                 nomeEdit.setText(produto?.nome);
                 precoEdit.setText(produto?.preco.toString());
             },
