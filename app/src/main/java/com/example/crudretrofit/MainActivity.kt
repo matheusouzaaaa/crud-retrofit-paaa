@@ -22,10 +22,15 @@ class MainActivity : AppCompatActivity() {
     fun consultarProduto(view: View){
         val cepEdit = findViewById<EditText>(R.id.editTextTextPersonName)
         val textEstado = findViewById<TextView>(R.id.resposta)
+        val nomeEdit = findViewById<EditText>(R.id.editNome)
+        val precoEdit = findViewById<EditText>(R.id.editPreco)
         val id = cepEdit.text.toString()
         produtoClientApi.buscarProdutoPorId(
             id,
-            onSuccess = {produto -> textEstado.text = produto?.nome },
+            onSuccess = { produto ->
+                nomeEdit.setText(produto?.nome);
+                precoEdit.setText(produto?.preco.toString());
+            },
             onFail = { Toast.makeText(this,"Errou", Toast.LENGTH_LONG).show()}
         )
     }
@@ -50,6 +55,21 @@ class MainActivity : AppCompatActivity() {
             id,
             onSuccess = {Toast.makeText(this,"Excluído com sucesso", Toast.LENGTH_LONG).show()},
             onFail = { Toast.makeText(this,"Errou exclusão", Toast.LENGTH_LONG).show()}
+        )
+    }
+
+    fun alterarProdutos(view: View){
+        val nome = findViewById<EditText>(R.id.editNome).text.toString()
+        val preco = findViewById<EditText>(R.id.editPreco).text.toString()
+        val id = findViewById<EditText>(R.id.editTextTextPersonName).text.toString()
+        val produto = Produto(id = id.toInt(), nome = nome, preco = preco.toFloat())
+        produtoClientApi.alterarProdutos(
+            produto,
+            id,
+            onSuccess = {
+                Toast.makeText(this,"Atualizado com sucesso", Toast.LENGTH_LONG).show()
+            },
+            onFail = { Toast.makeText(this,"Errou cadastro", Toast.LENGTH_LONG).show()}
         )
     }
 }

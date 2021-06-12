@@ -15,4 +15,8 @@ interface ProdutoService {
     @POST("/produtos")
     fun cadastrarProdutos(@Body userData: Produto): Call<Produto>
 
+    @Headers("Content-type: application/json")
+    @PUT("/produtos/{id}")
+    fun alterarProdutos(@Body userData: Produto, @Path("id") id: String): Call<Produto>
+
 }

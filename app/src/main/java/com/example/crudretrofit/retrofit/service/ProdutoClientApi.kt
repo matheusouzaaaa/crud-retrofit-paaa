@@ -68,5 +68,27 @@ class ProdutoClientApi (private val produtoService: ProdutoService = AppRetrofit
         )
     }
 
+    fun alterarProdutos(
+        userData: Produto,
+        id: String,
+        onSuccess: (produto: Produto?) -> Unit,
+        onFail: (erro: String?) -> Unit
+    ){
+        produtoService.alterarProdutos(userData, id).enqueue(
+            object : Callback<Produto> {
+                override fun onFailure(call: Call<Produto>, t: Throwable) {
+                    onFail(t.message)
+                }
+                override fun onResponse( call: Call<Produto>, response: Response<Produto>) {
+                    if(response.isSuccessful){
+                        onSuccess(response.body())
+                    }else{
+                        onFail("Erro não identificado")
+                    }
+                }
+            }
+        )
+    }
+
 
 }
